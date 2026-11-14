@@ -1,0 +1,46 @@
+@page
+@model PublishModel
+@{
+    ViewData["Title"] = "Publish a skill";
+}
+<section class="page-heading">
+    <h1>Publish a skill</h1>
+    <p class="intro">Upload your skill package so your team can discover and reuse it.</p>
+</section>
+<div class="publish-layout">
+    <form method="post" enctype="multipart/form-data" class="panel publish-form">
+        <h2>Skill details</h2>
+        <p class="form-note">All fields are required.</p>
+        <div asp-validation-summary="All" class="validation" role="alert"></div>
+        <div class="field">
+            <label asp-for="Name">Skill name</label>
+            <input asp-for="Name" maxlength="80" required placeholder="Review a pull request" />
+        </div>
+        <div class="field">
+            <label asp-for="Description">Description</label>
+            <textarea asp-for="Description" maxlength="500" rows="4" required placeholder="What does this skill help someone do?"></textarea>
+        </div>
+        <div class="field">
+            <label asp-for="Author">Author</label>
+            <input asp-for="Author" maxlength="80" required placeholder="Your name" />
+        </div>
+        <div class="field">
+            <label asp-for="Package">Skill package (.zip)</label>
+            <input asp-for="Package" type="file" accept=".zip" required aria-describedby="package-help" />
+            <p class="help" id="package-help">Up to 5 MiB. Include a nonempty UTF-8 SKILL.md. After an upload error, select the ZIP again before retrying.</p>
+        </div>
+        <div class="form-actions"><button class="button button-primary" type="submit">Publish skill</button><a asp-page="/Index">Cancel</a></div>
+    </form>
+    <aside class="panel package-help">
+        <h2>Package structure</h2>
+        <p>A skill contains instructions for an AI assistant, plus any optional supporting files.</p>
+        <pre><code>review-skill/
+  SKILL.md
+  scripts/
+    check.py</code></pre>
+        <p>Place SKILL.md at the ZIP root, or one folder down with all supporting files under that same folder.</p>
+        <h3>Package limits</h3>
+        <ul><li>5 MiB ZIP, 20 MiB expanded</li><li>Up to 100 files and folders</li><li>SKILL.md up to 256 KiB</li></ul>
+        <p class="package-note">Packages are stored without extracting or executing their contents. Author names are self-reported.</p>
+    </aside>
+</div>

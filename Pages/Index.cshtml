@@ -1,0 +1,67 @@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "AI Skills Marketplace";
+}
+<section class="page-heading">
+    <h1>AI Skills Marketplace</h1>
+    <p class="intro">Discover, share, and download reusable skills for your team’s AI coding assistants.</p>
+</section>
+<section aria-labelledby="catalog-title">
+    <form method="get" class="search panel" role="search">
+        <label for="query">Search skills</label>
+        <div class="search-controls">
+            <div class="search-input">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" /><path d="m16 16 4.5 4.5" /></svg>
+                <input id="query" name="q" type="search" value="@Model.Query" placeholder="Search by name or description" maxlength="200" />
+            </div>
+            <button class="button button-secondary" type="submit">Search</button>
+        </div>
+        @if (!string.IsNullOrWhiteSpace(Model.Query))
+        {
+            <a class="clear-search" asp-page="/Index">Clear search</a>
+        }
+    </form>
+    <div class="catalog-heading">
+        <h2 id="catalog-title">Shared skills</h2>
+        <span class="result-count" role="status">@Model.Skills.Count skill@(Model.Skills.Count == 1 ? "" : "s")@(string.IsNullOrWhiteSpace(Model.Query) ? " available" : " found")</span>
+    </div>
+    @if (Model.Skills.Count == 0)
+    {
+        <div class="empty panel">
+            @if (string.IsNullOrWhiteSpace(Model.Query))
+            {
+                <h3>No skills yet</h3>
+                <p>Start the collection by publishing a skill using the button in the header.</p>
+            }
+            else
+            {
+                <h3>No matching skills</h3>
+                <p>No skills match “@Model.Query”. Try a broader term or clear your search.</p>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="grid">
+            @foreach (var skill in Model.Skills)
+            {
+                <article class="skill-card">
+                    <div class="card-heading">
+                        <span class="skill-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z" /><path d="M14 3v5h5M8 12h8M8 16h6" /></svg></span>
+                        <h3>@skill.Name</h3>
+                    </div>
+                    <p class="card-description">@skill.Description</p>
+                    <div class="card-byline">
+                        <p class="card-author">By @skill.Author</p>
+                        <span class="card-size">@((skill.SizeBytes / 1024.0).ToString("0.0")) KiB · ZIP</span>
+                    </div>
+                    <div class="card-footer">
+                        <a class="view-skill" asp-page="/Details" asp-route-id="@skill.Id" aria-label="View skill: @skill.Name">View skill <span aria-hidden="true">→</span></a>
+                        <a class="card-download" asp-page="/Details" asp-page-handler="Download" asp-route-id="@skill.Id" aria-label="Download ZIP: @skill.Name">Download ZIP <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M12 3v12m-4-4 4 4 4-4M5 16v4h14v-4" /></svg></a>
+                    </div>
+                </article>
+            }
+        </div>
+    }
+</section>

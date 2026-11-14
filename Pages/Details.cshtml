@@ -1,0 +1,24 @@
+@page "{id}"
+@model DetailsModel
+@{
+    ViewData["Title"] = Model.Skill.Name;
+}
+<section class="page-heading">
+    <a class="back-link" asp-page="/Index">← Back to skills</a>
+    <h1>@Model.Skill.Name</h1>
+    <p class="intro">@Model.Skill.Description</p>
+</section>
+<div class="detail-summary panel">
+    <dl class="detail-meta">
+        <div><dt>Author</dt><dd>@Model.Skill.Author</dd></div>
+        <div><dt>Published (UTC)</dt><dd>@(DateTimeOffset.Parse(Model.Skill.CreatedUtc).ToString("yyyy-MM-dd HH:mm"))</dd></div>
+        <div><dt>Package size</dt><dd>@((Model.Skill.SizeBytes / 1024.0).ToString("0.0")) KiB · ZIP</dd></div>
+    </dl>
+    <a class="button button-primary" asp-page="/Details" asp-page-handler="Download" asp-route-id="@Model.Skill.Id">Download ZIP</a>
+</div>
+<section class="panel instructions" aria-labelledby="instructions-heading">
+    <div class="instructions-heading"><h2 id="instructions-heading">Instructions</h2><span class="text-label">Plain text</span></div>
+    <p class="instruction-path">@Model.Skill.InstructionPath</p>
+    <pre><code>@Model.Skill.Instructions</code></pre>
+</section>
+<p class="download-note">Review packages before using their instructions or running supporting scripts. Upload validation is not a malware scan.</p>

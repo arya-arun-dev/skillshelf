@@ -1,0 +1,19 @@
+@page
+@model ErrorModel
+@{
+    ViewData["Title"] = "Request could not be completed";
+}
+<section class="page-heading error-page"><p class="status-label">Error @Model.Status</p>
+@if (Model.Status == 404)
+{
+    <h1>We couldn’t find that.</h1><p>The skill or page may no longer be available.</p>
+}
+else if (Model.Status == 413)
+{
+    <h1>The upload is too large.</h1><p>Choose a ZIP no larger than 5 MiB.</p>
+}
+else
+{
+    <h1>Something went wrong.</h1><p>Try again. If the problem continues, check the application terminal for details.</p>
+}
+<a asp-page="/Index">Return to collection</a></section>

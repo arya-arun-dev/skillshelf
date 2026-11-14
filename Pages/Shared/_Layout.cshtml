@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+@{
+    var currentPage = ViewContext.RouteData.Values["page"]?.ToString();
+}
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"] · SkillShelf</title>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="site-header">
+        <div class="header-inner">
+            <a class="brand" asp-page="/Index"><span class="brand-mark" aria-hidden="true">S</span> SkillShelf</a>
+            <nav aria-label="Main">
+                <a class="nav-link" asp-page="/Index" aria-current="@(currentPage == "/Index" ? "page" : null)">Browse skills</a>
+                @if (currentPage == "/Publish")
+                {
+                    <span class="nav-link nav-current" aria-current="page">Publish a skill</span>
+                }
+                else
+                {
+                    <a class="button button-primary nav-publish" asp-page="/Publish">Publish a skill</a>
+                }
+            </nav>
+        </div>
+    </header>
+    <main id="main-content" tabindex="-1">@RenderBody()</main>
+    <footer><span>SkillShelf</span><span>A shared library of AI skills</span></footer>
+</body>
+</html>
